@@ -69,7 +69,8 @@ var styles = StyleSheet.create({
         overflow: 'hidden'
     },
     menuStyle: {
-        overflow: 'scroll'
+        overflow: 'scroll',
+        backgroundColor: 'transparent',
     }
 });
 
