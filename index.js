@@ -1,34 +1,27 @@
-import React, {Component, PropTypes} from 'react';
-import {
-    PanResponder,
-    View,
-    TouchableWithoutFeedback,
-    TextInput,
-    Dimensions,
-    StyleSheet,
-    Animated,
-    Easing
-} from 'react-native';
+import React, { Component, PropTypes } from 'react';
+import { View, StyleSheet, Animated, Easing } from 'react-native';
 
 const Expand = class extends Component {
-    displayName: 'Expand'
+    displayName: 'Expand';
 
-    constructor (props, context) {
+    constructor(props, context) {
         super(props, context);
-        this.state = { height: this.props.animatedValue || new Animated.Value(this.props.minHeight || 0) };
+        this.state = {
+            height: this.props.animatedValue || new Animated.Value(this.props.minHeight || 0),
+        };
     }
 
-    componentWillReceiveProps = (newProps) => {
-        if (this.props.value !== newProps.value) {
-            newProps.value ? this.open() : this.close();
+    componentDidUpdate(prevProps) {
+        if (this.props.value !== prevProps.value) {
+            this.props.value ? this.open() : this.close();
         }
-    };
+    }
 
     close = () => {
         Animated.timing(this.state.height, {
             easing: Easing.inOut(Easing.ease),
             duration: 300,
-            toValue: this.props.minHeight || 0
+            toValue: this.props.minHeight || 0,
         }).start();
     };
 
@@ -36,18 +29,23 @@ const Expand = class extends Component {
         Animated.timing(this.state.height, {
             easing: Easing.inOut(Easing.ease),
             duration: 270,
-            toValue: this.state.maxHeight
+            toValue: this.state.maxHeight,
         }).start();
     };
 
-    _setMaxHeight (event) {
+    _setMaxHeight(event) {
         const layoutHeight = event.nativeEvent.layout.height;
-        this.setState({
-            maxHeight: Math.min((this.props.maxHeight || layoutHeight), layoutHeight)
-        });
+        this.setState(
+            {
+                maxHeight: Math.min(this.props.maxHeight || layoutHeight, layoutHeight),
+            },
+            () => {
+                this.props.value && this.open();
+            },
+        );
     }
 
-    render () {
+    render() {
         var { style, children, containerStyle, style } = this.props;
         var { height } = this.state;
         return (
@@ -66,12 +64,12 @@ Expand.propTypes = {};
 
 var styles = StyleSheet.create({
     containerStyle: {
-        overflow: 'hidden'
+        overflow: 'hidden',
     },
     menuStyle: {
         overflow: 'scroll',
         backgroundColor: 'transparent',
-    }
+    },
 });
 
 module.exports = Expand;
