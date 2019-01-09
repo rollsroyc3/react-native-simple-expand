@@ -6,9 +6,15 @@ const Expand = class extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = {
-            height: this.props.animatedValue || new Animated.Value(this.props.minHeight || 0),
-        };
+
+        if (this.props.animatedValue) {
+            this.state = {height: this.props.animatedValue };
+        } else if (this.props.initialHeight && this.props.value) {
+            //Open by default
+            this.state = {height: new Animated.Value(this.props.initialHeight)};
+        } else {
+            this.state = {height: new Animated.Value(0)};
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -29,7 +35,7 @@ const Expand = class extends Component {
         Animated.timing(this.state.height, {
             easing: Easing.inOut(Easing.ease),
             duration: 270,
-            toValue: this.state.maxHeight,
+            toValue: this.props.initialHeight || this.state.maxHeight,
         }).start();
     };
 
@@ -40,7 +46,7 @@ const Expand = class extends Component {
                 maxHeight: Math.min(this.props.maxHeight || layoutHeight, layoutHeight),
             },
             () => {
-                this.props.value && this.open();
+                this.props.value && !this.props.initialHeight && this.open();
             },
         );
     }
@@ -48,6 +54,7 @@ const Expand = class extends Component {
     render() {
         var { style, children, containerStyle, style } = this.props;
         var { height } = this.state;
+
         return (
             <View style={[styles.containerStyle]}>
                 <Animated.View style={[styles.menuStyle, { height }, containerStyle]}>
