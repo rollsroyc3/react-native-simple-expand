@@ -32,7 +32,7 @@ const Expand = class extends Component {
     close = () => {
         Animated.timing(this.state.height, {
             easing: Easing.inOut(Easing.ease),
-            duration: 300,
+            duration: this.state.duration,
             toValue: this.props.minHeight || 0,
         }).start();
     };
@@ -40,7 +40,7 @@ const Expand = class extends Component {
     open = () => {
         Animated.timing(this.state.height, {
             easing: Easing.inOut(Easing.ease),
-            duration: 270,
+            duration: this.state.duration,
             toValue: this.props.initialHeight || this.state.maxHeight,
         }).start();
     };
