@@ -20,7 +20,7 @@ const Expand = class extends Component {
     componentDidMount() {
         setTimeout(() => {
             this.setState({ duration: 300 });     
-        }, 500);
+        }, 1000);
     }
 
     componentDidUpdate(prevProps) {
