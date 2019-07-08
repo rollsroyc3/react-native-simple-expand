@@ -17,12 +17,6 @@ const Expand = class extends Component {
         }
     }
 
-    componentDidMount() {
-        setTimeout(() => {
-            this.setState({ duration: 300 });     
-        }, 1000);
-    }
-
     componentDidUpdate(prevProps) {
         if (this.props.value !== prevProps.value) {
             this.props.value ? this.open() : this.close();
@@ -30,12 +24,20 @@ const Expand = class extends Component {
     }
 
     close = () => {
+        if (this.props.expandOnStart && this.state.duration == 0) {
+            this.setState({duration: 300}, this.closeIt)
+        } else {
+            this.closeIt();
+        }
+    };
+
+    closeIt = () => {
         Animated.timing(this.state.height, {
             easing: Easing.inOut(Easing.ease),
             duration: this.state.duration,
             toValue: this.props.minHeight || 0,
         }).start();
-    };
+    }
 
     open = () => {
         Animated.timing(this.state.height, {
