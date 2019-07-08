@@ -8,13 +8,19 @@ const Expand = class extends Component {
         super(props, context);
 
         if (this.props.animatedValue) {
-            this.state = {height: this.props.animatedValue };
-        } else if (this.props.initialHeight && this.props.value) {
-            //Open by default
-            this.state = {height: new Animated.Value(this.props.initialHeight)};
+            this.state = {height: this.props.animatedValue, duration: 300 };
+        } else if (this.props.expandOnStart && this.props.value) {
+            //Open by default, but dont show animation
+            this.state = {height: new Animated.Value(0), duration: 0};
         } else {
-            this.state = {height: new Animated.Value(0)};
+            this.state = {height: new Animated.Value(0), duration: 300 };
         }
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({ duration: 300 });     
+        }, 500);
     }
 
     componentDidUpdate(prevProps) {
