@@ -66,7 +66,7 @@ const Expand = class extends Component {
         return (
             <View style={[styles.containerStyle]}>
                 <Animated.View style={[styles.menuStyle, { height }, containerStyle]}>
-                    <View ref="expand" onLayout={this._setMaxHeight.bind(this)} style={style}>
+                    <View onLayout={this._setMaxHeight.bind(this)} style={style}>
                         {children}
                     </View>
                 </Animated.View>
